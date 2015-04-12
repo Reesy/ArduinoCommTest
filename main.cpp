@@ -20,12 +20,13 @@ int main(int argc, const char * argv[]) {
     //const FILE *file;
     FILE* file;
     file = fopen("/dev/cu.usbmodem1411","w");  //Opening device file
-    for(int i = 0; i < 10000; i++){
+    for(int i = 0; i < 80000000 ; i++){
    // std::cout << "The file is: " << file << std::endl;
     
         fprintf(file,"%d", 9); //Writing to the file
         
     }
+    std::cout << "Finished sending" << std::endl;
     fclose(file);
     
 }
