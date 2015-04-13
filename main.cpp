@@ -7,26 +7,26 @@
 //
 
 #include <iostream>
+#include <thread>
+#include <chrono>
+
 
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-        std::cout << "Hello, World!\n";
-    
-    
-   
-    
-
     //const FILE *file;
+   
+
     FILE* file;
     file = fopen("/dev/cu.usbmodem1411","w");  //Opening device file
-    for(int i = 0; i < 80000000 ; i++){
-   // std::cout << "The file is: " << file << std::endl;
     
-        fprintf(file,"%d", 9); //Writing to the file
+    for(int i = 0;i < 3;i++)
+    {
         
+        fprintf(file,"%d", 'a'); //Writing to the file
+       // fprintf(file,"%c",','); //To separate digits
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+      
     }
-    std::cout << "Finished sending" << std::endl;
     fclose(file);
-    
+    return 0;
 }
