@@ -20,18 +20,15 @@ int main(int argc, const char * argv[]) {
   
   
     FILE* file;
-    file = fopen("/dev/cu.usbmodem1411","w");  //Opening device file
+    file = fopen("/dev/cu.usbmodem1421","w");  //Opening device file
     
-    while(true)
-    {
-        file = fopen("/dev/cu.usbmodem1411","w");  //Opening device file
-        fprintf(file,"%d", 'a'); //Writing to the file
-        fprintf(file,"%c",','); //To separate digits
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-  
-        
-      
+    while(true){
+    fprintf(file,"%d", 'a'); //Writing to the file
+    fprintf(file,"%c",','); //To separate digits
+    fprintf(file,"%c",','); //To separate digits
     }
+   // std::cout << file[0] << std::endl;
+    
     fclose(file);
     
     return 0;
