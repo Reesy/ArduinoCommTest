@@ -5,7 +5,7 @@
 //
 
 #include "arduino-serial-lib.h"
-
+#include <iostream>
 #include <stdio.h>    // Standard input/output definitions 
 #include <unistd.h>   // UNIX standard function definitions 
 #include <fcntl.h>    // File control definitions 
@@ -99,7 +99,7 @@ int serialport_close( int fd )
 //
 int serialport_writebyte( int fd, uint8_t b)
 {
-    int n = write(fd,&b,1);
+    long n = write(fd,&b,1);
     if( n!=1)
         return -1;
     return 0;
@@ -108,8 +108,8 @@ int serialport_writebyte( int fd, uint8_t b)
 //
 int serialport_write(int fd, const char* str)
 {
-    int len = strlen(str);
-    int n = write(fd, str, len);
+    long len = strlen(str);
+    long n = write(fd, str, len);
     if( n!=len ) {
         perror("serialport_write: couldn't write whole string\n");
         return -1;
@@ -123,7 +123,7 @@ int serialport_read_until(int fd, char* buf, char until, int buf_max, int timeou
     char b[1];  // read expects an array, so we give it a 1-byte array
     int i=0;
     do { 
-        int n = read(fd, b, 1);  // read a char at a time
+        long n = read(fd, b, 1);  // read a char at a time
         if( n==-1) return -1;    // couldn't read
         if( n==0 ) {
             usleep( 1 * 1000 );  // wait 1 msec try again
@@ -146,4 +146,18 @@ int serialport_flush(int fd)
 {
     sleep(2); //required to make flush work, for some reason
     return tcflush(fd, TCIOFLUSH);
+}
+
+
+int main(int argc, const char * argv[]){
+    
+    int dev = serialport_init("/dev/cu.usbmodem1421", 9600);
+    
+    for(int i = 0; i < 500000; i++){
+        serialport_write(dev, "1");
+        serialport_writebyte(dev, 1);
+        
+    }
+    serialport_close(dev);
+    return 0;
 }
