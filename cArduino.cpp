@@ -1,5 +1,5 @@
 #ifndef cArduino_CPP
-#define cArduino_CPP 1
+#define cArduino_CPP
 
 #include "cArduino.h"
 
@@ -19,13 +19,14 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <stdlib.h>
-	#include <sys/time.h>
+#include <sys/time.h>
 using namespace std;
 
 
 cArduino::cArduino()
 {
 }
+
 
 cArduino::cArduino(ArduinoBaundRate baundRate)
 {
@@ -54,7 +55,8 @@ char* cArduino::getDeviceName()
 	return MODEMDEVICE;
 }
 
-/*Find Arduino device*/
+
+
 char* cArduino::findArduino()
 {
 	char  dir [] = "/dev/serial/by-id/";
@@ -89,7 +91,8 @@ char* cArduino::findArduino()
 	return 0;
 }
 
-/*is Arduino serial port Open?*/
+
+
 bool cArduino::isOpen()
 {
 	if(fd==0) return false;
@@ -170,7 +173,7 @@ bool cArduino::open(ArduinoBaundRate baundRate,char *DeviceFileName)
 	newtio.c_cc[VEOF]     = 4;     /* Ctrl-d */
 	newtio.c_cc[VTIME]    = 0;     /* inter-character timer unused */
 	newtio.c_cc[VMIN]     = 1;     /* blocking read until 1 character arrives */
-	newtio.c_cc[VSWTC]    = 0;     /* '\0' */
+	//newtio.c_cc[VSWTC]    = 0;     /* '\0' */
 	newtio.c_cc[VSTART]   = 0;     /* Ctrl-q */
 	newtio.c_cc[VSTOP]    = 0;     /* Ctrl-s */
 	newtio.c_cc[VSUSP]    = 0;     /* Ctrl-z */

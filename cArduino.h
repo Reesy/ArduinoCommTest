@@ -47,7 +47,7 @@ private:
         struct termios oldtio;
 
         /*Arduino FileName*/
-        char *MODEMDEVICE =0;
+        char *MODEMDEVICE = "/dev/cu.usbmodem1411/";
 
 public:
 
