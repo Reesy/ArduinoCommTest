@@ -152,10 +152,13 @@ int serialport_flush(int fd)
 int main(int argc, const char * argv[]){
     
     int dev = serialport_init("/dev/cu.usbmodem1421", 9600);
-    
-    for(int i = 0; i < 500000; i++){
-        serialport_write(dev, "1");
-        serialport_writebyte(dev, 1);
+    //This blinks twice, an initial message needs to be sent to the device to be aware of communications. 
+    for(int i = 0; i < 3; i++){
+        serialport_write(dev, "a");
+        sleep(1);
+        serialport_write(dev, "s'");
+        sleep(1);
+       // serialport_writebyte(dev, 1);
         
     }
     serialport_close(dev);
