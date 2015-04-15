@@ -8,17 +8,27 @@
 
 #include <iostream>
 #include <stdio.h>
+#include <unistd.h> 
 #include "arduino-serial-lib.h"
 
 
-
-
 int main(int argc, const char * argv[]){
+    std::cout << "Test" << std::endl;
+    arduinoSerialLib mySerial;
     
-    char const* file = "/dev/cu.usbmodem1421";
+   
+    int dev = mySerial.serialport_init("/dev/cu.usbmodem1421", 9600);
+    //This blinks twice, an initial message needs to be sent to the device to be aware of communications.
+    sleep(2);
+    mySerial.serialport_write(dev, ">");
     
-    int dev = serialport_init(file, 9600);
-    
-    
+    for(int i = 0; i < 10; i++){
+        usleep(1000);
+        std::string s = std::to_string(i);
+        std::cout << s << std::endl;
+        mySerial.serialport_write(dev, s.c_str());
+        
+    }
+    mySerial.serialport_close(dev);
     return 0;
 }

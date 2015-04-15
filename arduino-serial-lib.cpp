@@ -21,7 +21,7 @@
 // and a baud rate (bps) and connects to that port at that speed and 8N1.
 // opens the port in fully raw mode so you can send binary data.
 // returns valid fd, or -1 on error
-int serialport_init(const char* serialport, int baud)
+int arduinoSerialLib::serialport_init(const char* serialport, int baud)
 {
     struct termios toptions;
     int fd;
@@ -91,13 +91,13 @@ int serialport_init(const char* serialport, int baud)
 }
 
 //
-int serialport_close( int fd )
+int arduinoSerialLib::serialport_close( int fd )
 {
     return close( fd );
 }
 
 //
-int serialport_writebyte( int fd, uint8_t b)
+int arduinoSerialLib::serialport_writebyte( int fd, uint8_t b)
 {
     long n = write(fd,&b,1);
     if( n!=1)
@@ -106,7 +106,7 @@ int serialport_writebyte( int fd, uint8_t b)
 }
 
 //
-int serialport_write(int fd, const char* str)
+int arduinoSerialLib::serialport_write(int fd, const char* str)
 {
     long len = strlen(str);
     long n = write(fd, str, len);
@@ -118,7 +118,7 @@ int serialport_write(int fd, const char* str)
 }
 
 //
-int serialport_read_until(int fd, char* buf, char until, int buf_max, int timeout)
+int arduinoSerialLib::serialport_read_until(int fd, char* buf, char until, int buf_max, int timeout)
 {
     char b[1];  // read expects an array, so we give it a 1-byte array
     int i=0;
@@ -142,27 +142,10 @@ int serialport_read_until(int fd, char* buf, char until, int buf_max, int timeou
 }
 
 //
-int serialport_flush(int fd)
+int arduinoSerialLib::serialport_flush(int fd)
 {
     sleep(2); //required to make flush work, for some reason
     return tcflush(fd, TCIOFLUSH);
 }
 
 
-int main(int argc, const char * argv[]){
- 
-    int dev = serialport_init("/dev/cu.usbmodem1421", 9600);
-    //This blinks twice, an initial message needs to be sent to the device to be aware of communications.
-    serialport_write(dev, ">1");
-    serialport_write(dev, ">1");
-    for(int i = 0; i < 9; i++){
-        sleep(1);
-        serialport_write(dev, ">1");
-      //  serialport_write(dev, "s'");
-       // sleep(1);
-       // serialport_writebyte(dev, 1);
-        
-    }
-    serialport_close(dev);
-    return 0;
-}
